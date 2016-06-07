@@ -5,7 +5,7 @@
     <title>Restaurant Tracker</title>
 </head>
 <body>
-Hello!
+Hello {{name}}!
 
         <h2>Add a Restaurant to the list:
         <form action="/create-restaurant" method="post">
@@ -22,6 +22,12 @@ Hello!
             <button type="submit">Submit</button>
         </form>
         </h2>
+
+        <form action="/delete-restaurant" method="post">
+            <input type="number" name="id" placeholder="#">
+            <button type="submit">Delete Restaurant</button>
+
+        </form>
 
 
 <ol>

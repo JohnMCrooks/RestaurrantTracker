@@ -26,6 +26,7 @@ public class Main {
                     }else{
                         User user = userHash.get(username);  //Gotta pull the User object out of the hash to get to the restaurant variable
                         m.put("restaurants",user.restaurants);
+                        m.put("name", user.name);
                         return new ModelAndView(m, "home.html");
                     }
 
@@ -45,7 +46,7 @@ public class Main {
                     if (user==null){
                         user = new User(name,pass);
                         userHash.put(name,user);
-                    }else if (!pass.equals(user.name)){
+                    }else if (!pass.equals(user.password)){
                         throw new Exception("Wrong Password");
                     }
 
@@ -94,6 +95,27 @@ public class Main {
                     session.invalidate();
                     response.redirect("/");
                     return"";
+                }
+        );
+
+        Spark.post(
+                "/delete-restaurant",
+                (request, response) -> {
+                    Session session = request.session();
+                    String username = session.attribute("username");
+                    if(username==null){
+                        throw new Exception("Not Logged in");
+                    }
+                    int id = Integer.valueOf(request.queryParams("id"));
+                    User user = userHash.get(username);
+                    if(id<= 0 || id-1 >= user.restaurants.size()){
+                        throw new Exception("Invalid number!!");
+                    }
+                    user.restaurants.remove(id-1);
+
+                    response.redirect("/");
+                    return "";
+
                 }
         );
 
