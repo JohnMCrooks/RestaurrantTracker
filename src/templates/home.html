@@ -6,5 +6,32 @@
 </head>
 <body>
 Hello!
+
+        <h2>Add a Restaurant to the list:
+        <form action="/create-restaurant" method="post">
+            <input type="text" name="name" placeholder="Name"/><br>
+            <input type="text" name="location" placeholder="Location"/><br>
+            <select name="rating">
+                <option value="1">1 star</option>
+                <option value="2">2 stars</option>
+                <option value="3">3 stars</option>
+                <option value="4">4 stars</option>
+                <option value="5">5 stars</option>
+            </select><br>
+            <input type="text" name="comment" placeholder="Comments"/><br>
+            <button type="submit">Submit</button>
+        </form>
+        </h2>
+
+
+<ol>
+    {{#restaurants}}
+    <li><b>{{name}}</b> - {{location}} Your Rating:{{rating}} Star - {{comment}}</li>
+    {{/restaurants}}
+</ol>
+<br>
+<form action="/logout" method="post">
+    <button type="submit">Logout</button><br><br>
+</form>
 </body>
 </html>

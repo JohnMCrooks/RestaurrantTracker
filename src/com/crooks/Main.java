@@ -24,6 +24,8 @@ public class Main {
                     if(username==null){
                         return new ModelAndView(m, "login.html");
                     }else{
+                        User user = userHash.get(username);  //Gotta pull the User object out of the hash to get to the restaurant variable
+                        m.put("restaurants",user.restaurants);
                         return new ModelAndView(m, "home.html");
                     }
 
@@ -43,7 +45,7 @@ public class Main {
                     if (user==null){
                         user = new User(name,pass);
                         userHash.put(name,user);
-                    }else if (!name.equals(user.name)){
+                    }else if (!name.equals(user.name)){     // TODO - Ask about this logic later
                         throw new Exception("Wrong Password");
                     }
 
@@ -52,6 +54,46 @@ public class Main {
 
                     response.redirect("/");
                     return "";
+                }
+        );
+        Spark.post(
+                "/create-restaurant",
+                (request, response) -> {
+                    Session session = request.session();
+                    String username = session.attribute("username");
+                    if(username==null){
+                        throw new Exception("Not Logged in");
+                    }
+
+                    String name = request.queryParams("name");
+                    String location = request.queryParams("location");
+                    String comment = request.queryParams("comment");
+                    int rating = Integer.valueOf(request.queryParams("rating"));
+
+                    if (name==null||location==null||comment==null){
+                        throw new Exception("Incomplete form!!");
+                    }
+
+                    User user = userHash.get(username);
+                    if (user==null){
+                        throw new Exception("User Doesn't Exist");
+                    }
+                    Restaurant r1 = new Restaurant(name,location,comment,rating);
+                    user.restaurants.add(r1);   //adds restaurant to User Object
+
+                    response.redirect("/");
+                    return"";
+
+                }
+        );
+
+        Spark.post(
+                "/logout",
+                (request, response) -> {
+                    Session session = request.session();
+                    session.invalidate();
+                    response.redirect("/");
+                    return"";
                 }
         );
 
