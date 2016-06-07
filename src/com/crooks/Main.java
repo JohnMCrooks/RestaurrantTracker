@@ -45,7 +45,7 @@ public class Main {
                     if (user==null){
                         user = new User(name,pass);
                         userHash.put(name,user);
-                    }else if (!name.equals(user.name)){     // TODO - Ask about this logic later
+                    }else if (!pass.equals(user.name)){
                         throw new Exception("Wrong Password");
                     }
 
